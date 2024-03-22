@@ -8,6 +8,7 @@ void clear_screen();
 void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3);
+void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c); // Not tested
 
 int main(){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
@@ -54,6 +55,38 @@ void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, i
         printf("The lines intersect at (%d, %d).\n", ix, iy);
     } else {
         printf("The lines do not intersect within the line segments.\n");
+    }
+}
+
+void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c) {
+    /*
+    {x0, y0} and {x1, y1} are the two points on the linear line
+    a, b, and c are the coefficients of the quadratic equation
+    */
+
+    // Calculate the coefficients of the quadratic equation
+    int A = a;
+    int B = b - (y1 - y0) - (2 * a * x0);
+    int C = (a * x0 * x0) - (b * x0) + y0;
+
+    // Calculate the discriminant
+    int discriminant = (B * B) - (4 * A * C);
+
+    if (discriminant < 0) {
+        printf("The linear line and quadratic curve do not intersect.\n");
+        return;
+    } else if (discriminant == 0) {
+        // Calculate the intersection point
+        int x = -B / (2 * A);
+        int y = (a * x * x) + (b * x) + c;
+        printf("The linear line and quadratic curve intersect at (%d, %d).\n", x, y);
+    } else {
+        // Calculate the two intersection points
+        int x1 = (-B + sqrt(discriminant)) / (2 * A);
+        int x2 = (-B - sqrt(discriminant)) / (2 * A);
+        int y1 = (a * x1 * x1) + (b * x1) + c;
+        int y2 = (a * x2 * x2) + (b * x2) + c;
+        printf("The linear line and quadratic curve intersect at (%d, %d) and (%d, %d).\n", x1, y1, x2, y2);
     }
 }
 

@@ -7,9 +7,10 @@ quadratic (Kevin) [25/03/2024]
 cubic (Kevin) [25/03/2024]
 Intersection with x-axis, y-axis (Sajeev) [25/03/2024]
 Intersection with second graph (Sajeev) [25/03/2024]
+    - Draft completed for finding intersection between 2 linear lines.
 Minimum/maxmimum point based on concavity (Kevin) [25/03/2024]
 Create UI for coefficient input (Kevin) [25/03/2024]
-PS2 keyboard input (Sajeev) [25/03/2024]
+PS2 keyboard input (Sajeev) [25/03/2024] - Draft Completed.
 Epic graphing music (Sajeev) [25/03/2024]
 
 

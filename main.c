@@ -9,6 +9,7 @@ void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3);
 void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c); // Not tested
+double square_root(int discriminant);
 
 int main(){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
@@ -82,12 +83,30 @@ void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, in
         printf("The linear line and quadratic curve intersect at (%d, %d).\n", x, y);
     } else {
         // Calculate the two intersection points
-        int x1 = (-B + sqrt(discriminant)) / (2 * A);
-        int x2 = (-B - sqrt(discriminant)) / (2 * A);
+        int x1 = (-B + square_root(discriminant)) / (2 * A);
+        int x2 = (-B - square_root(discriminant)) / (2 * A);
         int y1 = (a * x1 * x1) + (b * x1) + c;
         int y2 = (a * x2 * x2) + (b * x2) + c;
         printf("The linear line and quadratic curve intersect at (%d, %d) and (%d, %d).\n", x1, y1, x2, y2);
     }
+}
+
+double square_root(int discriminant) {
+    if (discriminant < 0) {
+        // Handle negative discriminants (impossible to compute square root)
+        return -1.0; // Or you can choose to handle it differently based on your requirements
+    }
+
+    double guess = discriminant / 2.0; // Initial guess
+    double prev_guess; // Previous guess
+
+    // Iterate until convergence
+    do {
+        prev_guess = guess;
+        guess = (prev_guess + discriminant / prev_guess) / 2.0;
+    } while (prev_guess != guess);
+
+    return guess;
 }
 
 void plot_pixel(int x, int y, short int line_color) // function to draw a pixel on the screen (Works)
@@ -162,4 +181,3 @@ void draw_line(int x0, int y0, int x1, int y1, short int line_color)
         }
     }
 }
-

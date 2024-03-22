@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include <stdbool.h>
+#include <fmod.h>
+
 int pixel_buffer_start; // global variable
 
 // Function prototypes
@@ -11,24 +13,47 @@ void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, i
 void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c); // Not tested
 
 int main(){
-    volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
-    /* Read location of the pixel buffer from the pixel buffer controller */
-    pixel_buffer_start = *pixel_ctrl_ptr;
+    // volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
+    // /* Read location of the pixel buffer from the pixel buffer controller */
+    // pixel_buffer_start = *pixel_ctrl_ptr;
 
-    clear_screen();
+    // clear_screen();
 
-    // Define the coordinates of the two lines
-    int x0 = 0, y0 = 0, x1 = 180, y1 = 150;
-    int x2 = 150, y2 = 170, x3 = 319, y3 = 0;
+    // // Define the coordinates of the two lines
+    // int x0 = 0, y0 = 0, x1 = 180, y1 = 150;
+    // int x2 = 150, y2 = 170, x3 = 319, y3 = 0;
 
-    // Draw the two lines
-    draw_line(x0, y0, x1, y1, 0x001F);   // this line is blue
-    draw_line(x2, y2, x3, y3, 0x07E0); // this line is green
+    // // Draw the two lines
+    // draw_line(x0, y0, x1, y1, 0x001F);   // this line is blue
+    // draw_line(x2, y2, x3, y3, 0x07E0); // this line is green
 
-    get_intersection_between_two_linear_lines(x0, x1, y0, y1, x2, x3, y2, y3);
+    // get_intersection_between_two_linear_lines(x0, x1, y0, y1, x2, x3, y2, y3);
     
+    // return 0;
+
+
+    FMOD_SYSTEM *system;
+    FMOD_SOUND *sound;
+    FMOD_RESULT result;
+    int key;
+
+    result = FMOD_System_Create(&system);
+    result = FMOD_System_Init(system, 1, FMOD_INIT_NORMAL, NULL);
+
+    result = FMOD_System_CreateSound(system, "music.mp4", FMOD_SOFTWARE | FMOD_2D | FMOD_CREATESTREAM | FMOD_LOOP_NORMAL, 0, &sound);
+    result = FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, 0, NULL);
+
+    printf("Press any key to exit...\n");
+    scanf("%d", &key);
+
+    result = FMOD_Sound_Release(sound);
+    result = FMOD_System_Close(system);
+    result = FMOD_System_Release(system);
+
     return 0;
 }
+
+
 
 // Function definitions
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3){

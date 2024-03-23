@@ -1,6 +1,6 @@
 #define AUDIO_BASE 0xFF203040
 #define SW 0xff200040
-//test
+
 int main(void) {
   volatile int* audio_ptr = (int*) AUDIO_BASE;
   volatile int* sw = (int*) SW;

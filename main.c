@@ -9,7 +9,13 @@ void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3);
 void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c); // Not tested
-double square_root(int discriminant);
+
+// May have to use the gsl library. Check if it is available in the monitor program.
+void get_intersection_between_two_quadratic_curves(); // Not implemented
+void get_intersection_between_cubic_curve_and_quadratic_curve(); // Not implemented
+void get_intersection_between_a_cubic_curve_and_a_linear_line(); // Not implemented
+void get_intersection_between_two_cubic_curves(); // Not implemented
+// double square_root(int discriminant); // There is a way to use sqrt() function in Monitor Program
 
 int main(){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
@@ -33,6 +39,9 @@ int main(){
 
 // Function definitions
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3){
+    // {x0, y0} and {x1, y1} are the two points on the first line
+    // {x2, y2} and {x3, y3} are the two points on the second line
+
     // Calculate the intersection point
     int dx1 = x1 - x0;
     int dy1 = y1 - y0;
@@ -59,16 +68,20 @@ void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, i
     }
 }
 
-void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c) {
+void get_intersection_between_linear_line_and_quadratic_curve(int x0, int y0, int x1, int y1, int a, int b, int c) {
     /*
     {x0, y0} and {x1, y1} are the two points on the linear line
     a, b, and c are the coefficients of the quadratic equation
     */
 
+    // Calculate the slope and y-intercept of the line
+    float m = (float)(y1 - y0) / (x1 - x0);
+    float n = y0 - m * x0;
+
     // Calculate the coefficients of the quadratic equation
     int A = a;
-    int B = b - (y1 - y0) - (2 * a * x0);
-    int C = (a * x0 * x0) - (b * x0) + y0;
+    int B = b - m;
+    int C = c - n;
 
     // Calculate the discriminant
     int discriminant = (B * B) - (4 * A * C);
@@ -83,31 +96,48 @@ void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, in
         printf("The linear line and quadratic curve intersect at (%d, %d).\n", x, y);
     } else {
         // Calculate the two intersection points
-        int x1 = (-B + square_root(discriminant)) / (2 * A);
-        int x2 = (-B - square_root(discriminant)) / (2 * A);
+        int x1 = (-B + sqrt(discriminant)) / (2 * A);
+        int x2 = (-B - sqrt(discriminant)) / (2 * A);
         int y1 = (a * x1 * x1) + (b * x1) + c;
         int y2 = (a * x2 * x2) + (b * x2) + c;
         printf("The linear line and quadratic curve intersect at (%d, %d) and (%d, %d).\n", x1, y1, x2, y2);
     }
 }
 
-double square_root(int discriminant) {
-    if (discriminant < 0) {
-        // Handle negative discriminants (impossible to compute square root)
-        return -1.0; // Or you can choose to handle it differently based on your requirements
-    }
 
-    double guess = discriminant / 2.0; // Initial guess
-    double prev_guess; // Previous guess
-
-    // Iterate until convergence
-    do {
-        prev_guess = guess;
-        guess = (prev_guess + discriminant / prev_guess) / 2.0;
-    } while (prev_guess != guess);
-
-    return guess;
+void get_intersection_between_two_quadratic_curves() {
+    // To be implemented
 }
+
+void get_intersection_between_cubic_curve_and_quadratic_curve() {
+    // To be implemented
+}
+
+void get_intersection_between_a_cubic_curve_and_a_linear_line() {
+    // To be implemented
+}
+
+void get_intersection_between_two_cubic_curves() {
+    // To be implemented
+}
+
+// double square_root(int discriminant) {
+//     if (discriminant < 0) {
+//         // Handle negative discriminants (impossible to compute square root)
+//         return -1.0; // Or you can choose to handle it differently based on your requirements
+//     }
+
+//     double guess = discriminant / 2.0; // Initial guess
+//     double prev_guess; // Previous guess
+
+//     // Iterate until convergence
+//     do {
+//         prev_guess = guess;
+//         guess = (prev_guess + discriminant / prev_guess) / 2.0;
+//     } while (prev_guess != guess);
+
+//     return guess;
+// }
 
 void plot_pixel(int x, int y, short int line_color) // function to draw a pixel on the screen (Works)
 {

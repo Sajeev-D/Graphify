@@ -84,4 +84,5 @@ void HEX_PS2(char b1, char b2, char b3) {
     /* drive the hex displays */
     *(HEX3_HEX0_ptr) = *(int *)(hex_segs);
     *(HEX5_HEX4_ptr) = *(int *)(hex_segs + 4);
+    printf("%c", *(hex_segs));
 }

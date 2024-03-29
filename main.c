@@ -1,9 +1,6 @@
-#include<stdio.h>
-#include <stdbool.h>
-#include <stdlib.h>
-#include <math.h>
+#include "globalHeader.h"
+
 int pixel_buffer_start; // global variable
-int intersectionArray[2] = {0}; // Array to store the intersection points
 
 // Function prototypes
 void plot_pixel(int x, int y, short int line_color);
@@ -12,13 +9,7 @@ void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3);
 void get_intersection_between_linear_line_and_quadratic_curve(int x0, int y0, int x1, int y1, int a, int b, int c); // Not tested
-
-// May have to use the gsl library. Check if it is available in the monitor program.
-void get_intersection_between_two_quadratic_curves(); // Not implemented
-void get_intersection_between_cubic_curve_and_quadratic_curve(); // Not implemented
-void get_intersection_between_a_cubic_curve_and_a_linear_line(); // Not implemented
-void get_intersection_between_two_cubic_curves(); // Not implemented
-// double square_root(int discriminant); // There is a way to use sqrt() function in Monitor Program
+int main(void);
 
 int main(){
     volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
@@ -105,23 +96,6 @@ void get_intersection_between_linear_line_and_quadratic_curve(int x0, int y0, in
         int y2 = (a * x2 * x2) + (b * x2) + c;
         printf("The linear line and quadratic curve intersect at (%d, %d) and (%d, %d).\n", x1, y1, x2, y2);
     }
-}
-
-
-void get_intersection_between_two_quadratic_curves() {
-    // To be implemented
-}
-
-void get_intersection_between_cubic_curve_and_quadratic_curve() {
-    // To be implemented
-}
-
-void get_intersection_between_a_cubic_curve_and_a_linear_line() {
-    // To be implemented
-}
-
-void get_intersection_between_two_cubic_curves() {
-    // To be implemented
 }
 
 // double square_root(int discriminant) {

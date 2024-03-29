@@ -1,6 +1,9 @@
 #include<stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <math.h>
 int pixel_buffer_start; // global variable
+int intersectionArray[2] = {0}; // Array to store the intersection points
 
 // Function prototypes
 void plot_pixel(int x, int y, short int line_color);
@@ -8,7 +11,7 @@ void clear_screen();
 void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3);
-void get_intersection_between_linear_line_and_quadratic_curve(int x0, int x1, int y0, int y1, int a, int b, int c); // Not tested
+void get_intersection_between_linear_line_and_quadratic_curve(int x0, int y0, int x1, int y1, int a, int b, int c); // Not tested
 
 // May have to use the gsl library. Check if it is available in the monitor program.
 void get_intersection_between_two_quadratic_curves(); // Not implemented

@@ -2533,7 +2533,8 @@ audio_playback_mono(int *samples, int n) {
 
 int 
 main(void) {
-   audio_playback_mono(samples, samples_n);
+  while(1){   audio_playback_mono(samples, samples_n);
+}
    while (1);
 }
 

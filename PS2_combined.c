@@ -1,4 +1,5 @@
-#include "globalHeader.h"
+#include "global.h"
+int ps2_data;
 
 volatile char byte1, byte2, byte3; // PS/2 variables
 
@@ -47,6 +48,9 @@ void PS2_ISR( void )
 			// mouse inserted; initialize sending of data
 			*(PS2_ptr) = 0xF4;
 	}
+     play_audio();
+    printf("Called the audio function\n");    
+    ps2_data = PS2_data;
 	return;
 }
 

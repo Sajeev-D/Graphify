@@ -1,0 +1,176 @@
+void drawImage(short (*image)[320]){
+    for(int i = 0; i < 320; i++){
+            for(int j = 0; j < 240; j++){
+                plot_pixel(i, j, image[j][i]);
+            }
+        }
+}
+
+void drawDigit(int xPos, int yPos, short (*image)[40]){
+	short int white = 0xFFFF;
+    for(int i = 0; i < 40; i++){
+            for(int j = 0; j < 40; j++){
+                if(image[j][i] != white){
+                	plot_pixel(xPos+i, yPos+j, image[j][i]);
+				}
+            }
+        }
+}
+
+int drawUnderline(int xPos, int yPos, int erase){
+    int color = 0x0000;
+    if(erase){
+        color = 0xFFFF;
+    }
+    for(int i = xPos; i < xPos + 8; i++){
+        plot_pixel(i, yPos, color);
+        plot_pixel(i, yPos+1, color);
+
+    }
+}
+
+void drawNumber(int xPos, int yPos, int number){
+    switch(number){
+        case 0x45:
+            drawDigit(xPos, yPos,digitZero);
+        break;
+        case 0x16:
+            drawDigit(xPos, yPos,digitOne);
+        break;
+        case 0x1E:
+            drawDigit(xPos, yPos,digitTwo);
+        break;
+        case 0x26:
+            drawDigit(xPos, yPos,digitThree);
+        break;
+        case 4:
+            drawDigit(xPos, yPos,digitFour);
+        break;
+        case 5:
+            drawDigit(xPos, yPos,digitFive);
+        break;
+        case 6:
+            drawDigit(xPos, yPos,digitSix);
+        break;
+        case 7:
+            drawDigit(xPos, yPos,digitSeven);
+        break;
+        case 8:
+            drawDigit(xPos, yPos,digitEight);
+        break;
+        case 9:
+            drawDigit(xPos, yPos,digitNine);
+        break;
+    }
+}
+
+bool checkInput(int xPos, int yPos){
+    while(1){
+        if(*pushbutton_base == 8){
+            return true;
+        }else{
+            drawNumber(xPos, yPos, *switch_base);
+        }
+    }
+    return false;
+}
+
+bool getLinearFunction(){
+    drawImage(linearFunc);
+    bool finished = false;
+    int erase = 0, display = 0;
+	int underlineX = 138, underlineY = 118;
+
+    while(!finished){
+        
+        drawImage(linearFunc);
+		
+		if(coefficientsTemp[0] != -1){
+            drawNumber(125, 87, coefficientsTemp[0]);
+        }
+        if(coefficientsTemp[1] != -1){
+            drawNumber(190, 87, coefficientsTemp[1]);
+        }
+
+        if(*switch_ctrl != 0){
+       		coefficientsTemp[index]  = *switch_ctrl;
+		}
+		
+		if(index == 0 && *key_ctrl == 8 && coefficientsTemp[0]!= -1){
+			index++;
+			drawUnderline(underlineX ,underlineY, display);
+			underlineX = 203;
+			underlineY = 118;
+		}else if (index == 1 && *key_ctrl == 8 && coefficientsTemp[1]!= -1){
+			finished =  true;
+			drawUnderline(203 ,118, display);
+			continue;
+		}
+		
+		if(erase == 2){ 
+			display = 1;
+		}else if (erase == 4){
+			display = 0;
+			erase = erase%4;
+		}	
+		
+		drawUnderline(underlineX ,underlineY, display);
+
+		erase++;
+		
+        wait_for_vsync(); // swap front and back buffers on VGA vertical sync
+        pixel_buffer_start = *(pixel_ctrl_ptr + 1); // new back buffer
+
+    }
+
+    return true;
+}
+
+
+bool functionMenu(){
+    drawImage(linearFunc);
+    bool finished = false;
+    int erase = 0, display = 0;
+	int underlineX = 138, underlineY = 118;
+
+    while(!finished){
+        
+        drawImage(linearFunc);
+		
+		if(coefficientsTemp[0] != -1){
+            drawNumber(125, 87, coefficientsTemp[0]);
+        }
+        if(coefficientsTemp[1] != -1){
+            drawNumber(190, 87, coefficientsTemp[1]);
+        }
+
+        if(*switch_ctrl != 0){
+       		coefficientsTemp[index]  = *switch_ctrl;
+		}
+		
+		if(index == 0 && *key_ctrl == 8 && coefficientsTemp[0]!= -1){
+			index++;
+			underlineX = 203;
+			underlineY = 118;
+		}else if (index == 1 && *key_ctrl == 8 && coefficientsTemp[1]!= -1){
+			finished =  true;
+		}
+		
+		if(erase == 2){ 
+			display = 1;
+		}else if (erase == 4){
+			display = 0;
+			erase = erase%4;
+		}	
+		
+		drawUnderline(underlineX ,underlineY, display);
+
+		erase++;
+		
+        wait_for_vsync(); // swap front and back buffers on VGA vertical sync
+        pixel_buffer_start = *(pixel_ctrl_ptr + 1); // new back buffer
+
+    }
+
+    return true;
+}

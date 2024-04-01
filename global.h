@@ -6,9 +6,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+extern int ps2_data;
+
+
 extern int pixel_buffer_start;
-extern int intersectionArray[2] = {
-    0};  // Array to store the intersection points
+//extern int intersectionArray[2] = {
+  //  0};  // Array to store the intersection points
 
 extern void plot_pixel(int x, int y, short int line_color);
 extern void clear_screen();

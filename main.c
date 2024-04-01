@@ -1,4 +1,4 @@
-#include "globalHeader.h"
+#include "global.h"
 
 int pixel_buffer_start; // global variable
 
@@ -11,26 +11,43 @@ void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, i
 void get_intersection_between_linear_line_and_quadratic_curve(int x0, int y0, int x1, int y1, int a, int b, int c); // Not tested
 int main(void);
 
-int main(){
-    volatile int * pixel_ctrl_ptr = (int *)0xFF203020;
-    /* Read location of the pixel buffer from the pixel buffer controller */
-    pixel_buffer_start = *pixel_ctrl_ptr;
+int main(void) {
 
-    clear_screen();
+    /* Declare volatile pointers to I/O registers (volatile means that IO load
+       and store instructions will be used to access these pointer locations,
+       instead of regular memory loads and stores) */
+    volatile int * interval_timer_ptr =
+        (int *)TIMER_BASE;                    // interal timer base address
+    volatile int * PS2_ptr = (int *)PS2_BASE; // PS/2 port address
 
-    // Define the coordinates of the two lines
-    int x0 = 0, y0 = 0, x1 = 180, y1 = 150;
-    int x2 = 150, y2 = 170, x3 = 319, y3 = 0;
+    /* initialize some variables */
+    byte1   = 0;
+    byte2   = 0;
+    byte3   = 0; // used to hold PS/2 data
+    timeout = 0; // synchronize with the timer
 
-    // Draw the two lines
-    draw_line(x0, y0, x1, y1, 0x001F);   // this line is blue
-    draw_line(x2, y2, x3, y3, 0x07E0); // this line is green
+    /* set the interval timer period for scrolling the HEX displays */
+    int counter = 20000000; // 1/(100 MHz) x (20000000) = 200 msec
+    *(interval_timer_ptr + 0x2) = (counter & 0xFFFF);
+    *(interval_timer_ptr + 0x3) = (counter >> 16) & 0xFFFF;
 
-    get_intersection_between_two_linear_lines(x0, x1, y0, y1, x2, x3, y2, y3);
-    
-    return 0;
+    /* start interval timer, enable its interrupts */
+    *(interval_timer_ptr + 1) = 0x7; // STOP = 0, START = 1, CONT = 1, ITO = 1
+
+    *(PS2_ptr) = 0xFF; /* reset */
+    *(PS2_ptr + 1) =
+        0x1; /* write to the PS/2 Control register to enable interrupts */
+
+    NIOS2_WRITE_IENABLE(
+        0x81); /* set interrupt mask bits for levels 0 (interval
+                * timer) and 7 (PS/2) */
+
+    NIOS2_WRITE_STATUS(1); // enable Nios II interrupts
+
+    while (1) {
+
+    }
 }
-
 // Function definitions
 void get_intersection_between_two_linear_lines(int x0, int x1, int y0, int y1, int x2, int x3, int y2, int y3){
     // {x0, y0} and {x1, y1} are the two points on the first line

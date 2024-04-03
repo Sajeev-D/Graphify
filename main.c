@@ -9,23 +9,10 @@ void swap(int *a, int *b);
 void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 int main(void);
 
-// Global variables
-// int coefficients[6];
-// int intersectionArray[8];
-
 int main(){
-    coefficients[0] = 1;
-    coefficients[1] = 0;
-    coefficients[2] = -1;
-    coefficients[3] = 1;
-    linear_linear_intersection(coefficients);
+
     return 0;
 }
-
-/*Create a fucntion to get the min and max of a quadratic curve
-
- input - gloabl array of coefficents of the qudratic curve
- output - */
 
 void plot_pixel(int x, int y, short int line_color) // function to draw a pixel on the screen (Works)
 {

@@ -21,4 +21,9 @@ Starting screen with start key (Kevin)
 Exit key (Kevin) 
 Calibrate for light mode and dark mode (Sajeev)
 
-
+Things to do:
+    - Get the LED to display the points of intersection
+    - 4 spaces will show the points of intersection
+    - 1 space will show the which function is being shown
+    - Create a fucntion to get the min and max of a quadratic curve
+    - input - global array of coefficents of the qudratic curve output (Done)

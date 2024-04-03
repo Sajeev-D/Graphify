@@ -8,20 +8,20 @@
 
 extern int ps2_data;
 
-
 extern int pixel_buffer_start;
-//extern int intersectionArray[2] = {
-  //  0};  // Array to store the intersection points
+
+// global array of coefficents of linear/qudratic curve
+extern int coefficients[6];
+
+// Array to store the intersection points
+extern double intersectionArray[8];
 
 extern void plot_pixel(int x, int y, short int line_color);
 extern void clear_screen();
 extern void swap(int *a, int *b);
 extern void draw_line(int x0, int y0, int x1, int y1, short int line_color);
-extern void get_intersection_between_two_linear_lines(int x0, int x1, int y0,
-                                                      int y1, int x2, int x3,
-                                                      int y2, int y3);
-extern void get_intersection_between_linear_line_and_quadratic_curve(
-    int x0, int y0, int x1, int y1, int a, int b, int c);  // Not tested
+extern void linear_linear_intersection(int coef[6]);
+extern void linear_quadratic_intersection(int coef[6]);
 
 /*******************************************************************************
  * This file provides address values that exist in the DE1-SoC Computer
@@ -136,7 +136,7 @@ extern void PS2_ISR(void);
 /**************************Audio**************************/
 extern void delay(int delay_time);
 extern void audio_playback_mono(int *samples, int n);
-extern void play_audio(); // Call this to play music for 1 loop
+extern void play_audio();  // Call this to play music for 1 loop
 /*********************************************************/
 
 #endif

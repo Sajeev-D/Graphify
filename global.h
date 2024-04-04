@@ -16,12 +16,23 @@ extern int coefficients[6];
 // Array to store the intersection points
 extern double intersectionArray[8];
 
+// Array to store max and min points of a quadratic curve
+extern double maxMinPoints[4];
+
+// Array to store the intersection points with the axis
+extern double intersectionWithAxis[6];
+
 extern void plot_pixel(int x, int y, short int line_color);
 extern void clear_screen();
 extern void swap(int *a, int *b);
 extern void draw_line(int x0, int y0, int x1, int y1, short int line_color);
+
+// Function prototypes from findIntersections.c
 extern void linear_linear_intersection(int coef[6]);
 extern void linear_quadratic_intersection(int coef[6]);
+extern void linear_axis_intersection(int coef[6]);
+extern void quadratic_axis_intersection(int coef[6]);
+extern void maxMinOfQuadratic(int coef[6]);
 extern void disp_intersections(double intersections[8]);
 extern int get_hex(int num);
 

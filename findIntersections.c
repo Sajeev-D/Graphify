@@ -3,7 +3,72 @@
 void linear_linear_intersection(int coef[6]);
 void linear_quadratic_intersection(int coef[6]);
 void disp_intersections(double intersections[8]);
+void maxMinOfQuadratic(int coef[6]);
+void linear_axis_intersection(int coef[6]);
+void quadratic_axis_intersection(int coef[6]);
 int get_hex(int num);
+
+void linear_axis_intersection(int coef[6]){
+  double m = coef[0];
+  double c = coef[1];
+
+  if (m == 0) { // The line is horizontal
+    // Intersection with x-axis (y = 0)
+    if (c == 0) {
+      printf("The line intersects the x-axis at any point where y = 0.\n");
+    } else {
+      printf("The line does not intersect the x-axis.\n");
+    }
+    // Intersection with y-axis (x = 0)
+    intersectionWithAxis[2] = 0;
+    intersectionWithAxis[3] = c;
+    printf("The line intersects the y-axis at (0, %.2f).\n", c);
+  } else { // The line is neither vertical nor horizontal
+    // Intersection with x-axis (y = 0)
+    double x_intersect = -c / m;
+    intersectionWithAxis[0] = x_intersect;
+    intersectionWithAxis[1] = 0;
+    printf("The line intersects the x-axis at (%.2f, 0).\n", x_intersect);
+
+    // Intersection with y-axis (x = 0)
+    intersectionWithAxis[2] = 0;
+    intersectionWithAxis[3] = c;
+    printf("The line intersects the y-axis at (0, %.2f).\n", c);
+  }
+}
+
+
+void quadratic_axis_intersection(int coef[6]){
+  double a = coef[0];
+  double b = coef[1];
+  double c = coef[2];
+
+  // Calculate the roots of the quadratic function (intersection with x-axis)
+  double discriminant = b * b - 4 * a * c;
+  if (discriminant < 0) {
+    // The quadratic function does not intersect the x-axis
+    intersectionWithAxis[0] = -1;
+    intersectionWithAxis[1] = -1;
+    intersectionWithAxis[2] = -1;
+    intersectionWithAxis[3] = -1;
+    printf("The quadratic function does not intersect the x-axis.\n");
+  } else {
+    double sqrt_discriminant = sqrt(discriminant);
+    double x1 = (-b - sqrt_discriminant) / (2 * a);
+    double x2 = (-b + sqrt_discriminant) / (2 * a);
+    intersectionWithAxis[0] = x1;
+    intersectionWithAxis[1] = 0;
+    intersectionWithAxis[2] = x2;
+    intersectionWithAxis[3] = 0;
+    printf("The quadratic function intersects the x-axis at (%.2f, 0) and (%.2f, 0).\n", x1, x2);
+  }
+
+  // Intersection with y-axis (x = 0)
+  intersectionWithAxis[4] = 0;
+  intersectionWithAxis[5] = c;
+  printf("The quadratic function intersects the y-axis at (0, %.2f).\n", c);
+}
+
 
 void linear_linear_intersection(int coef[6]) {  // tested and working
   int m1 = coef[0];
@@ -137,4 +202,16 @@ int get_hex(int num) {
         case -1: return 0x8; // Display -
         default: return 0x00; // Turn off display for non-digit numbers
     }
+}
+
+void maxMinOfQuadratic(int coef[6]){
+  double a = coef[2];
+  double b = coef[3];
+  double c = coef[4];
+
+  // Calculate the vertex of the quadratic function
+  double x = -b / (2 * a);
+  double y = a * x * x + b * x + c;
+
+  printf("The quadratic curve has a vertex at (%.2f, %.2f).\n", x, y);
 }

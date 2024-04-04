@@ -2,6 +2,8 @@
 
 void linear_linear_intersection(int coef[6]);
 void linear_quadratic_intersection(int coef[6]);
+void disp_intersections(double intersections[8]);
+int get_hex(int num);
 
 void linear_linear_intersection(int coef[6]) {  // tested and working
   int m1 = coef[0];
@@ -11,6 +13,14 @@ void linear_linear_intersection(int coef[6]) {  // tested and working
 
   // Calculate the intersection point
   int denominator = m1 - m2;
+
+  // Display nothing on the HEX displays
+  intersectionArray[2] = -1; 
+  intersectionArray[3] = -1;
+  intersectionArray[2] = -1; 
+  intersectionArray[3] = -1;
+
+  disp_intersections(intersectionArray);
 
   if (denominator == 0) {
     printf("The lines are parallel and do not intersect.\n");
@@ -24,6 +34,11 @@ void linear_linear_intersection(int coef[6]) {  // tested and working
   intersectionArray[0] = x;
   intersectionArray[1] = y;
 
+  // The other 2 HEX displays are set to display a dash
+  intersectionArray[2] = -1; 
+  intersectionArray[3] = -1;
+
+  disp_intersections(intersectionArray);
   printf("The lines intersect at (%.2f, %.2f).\n", x, y);
 }
 
@@ -52,6 +67,12 @@ void linear_quadratic_intersection(int coef[6]) {  // tested and working
     // Store the intersection point in the array
     intersectionArray[0] = x;
     intersectionArray[1] = y;
+
+    // The other 2 HEX displays are set to display a dash
+    intersectionArray[2] = -1; 
+    intersectionArray[3] = -1;
+    disp_intersections(intersectionArray);
+
     printf("The linear line and quadratic curve intersect at (%.2f, %.2f).\n",
            x, y);
   } else {
@@ -71,5 +92,49 @@ void linear_quadratic_intersection(int coef[6]) {  // tested and working
         "The linear line and quadratic curve intersect at (%.2f, %.2f) and "
         "(%.2f, %.2f).\n",
         x1, y1, x2, y2);
+
+    disp_intersections(intersectionArray);
   }
+}
+
+void disp_intersections(double intersections[8]){
+	//int intersections[8] = {1,9,1,0,41,11,1};
+	volatile int *HEX1 = (int *) 0xff200020;
+	volatile int *HEX2 = (int*) 0xFF200030;
+
+  int intersection[8] = {(int)intersections[0], (int)intersections[1], (int)intersections[2], (int)intersections[3], (int)intersections[4], (int)intersections[5], (int)intersections[6], (int)intersections[7]};
+  
+  // check if the contents of the intersections array are single digits
+  for(int i = 0; i < 8; i++){
+
+    if(intersection[i] != -1){
+      if(intersection[i] < 0 || intersection[i] > 9){
+        printf("Invalid intersection point. Please enter single digit numbers.\n");
+        return;
+      }
+    }
+  }
+
+    *HEX1 = (get_hex(intersection[0]) << 24) | // HEX3
+           (get_hex(intersection[1]) << 16) | // HEX2
+           (get_hex(intersection[2]) << 8) |  // HEX1
+           get_hex(intersection[3]);           // HEX0
+  	*HEX2 =(get_hex(intersection[7]) << 8);  // HEX5 (Display which function is being used)
+}
+
+int get_hex(int num) {
+    switch(num) {
+        case 0: return 0x3F; // Display 0
+        case 1: return 0x06; // Display 1
+        case 2: return 0x5B; // Display 2
+        case 3: return 0x4F; // Display 3
+        case 4: return 0x66; // Display 4
+        case 5: return 0x6D; // Display 5
+        case 6: return 0x7D; // Display 6
+        case 7: return 0x07; // Display 7
+        case 8: return 0x7F; // Display 8
+        case 9: return 0x6F; // Display 9
+        case -1: return 0x8; // Display -
+        default: return 0x00; // Turn off display for non-digit numbers
+    }
 }

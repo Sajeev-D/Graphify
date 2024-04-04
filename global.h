@@ -22,6 +22,8 @@ extern void swap(int *a, int *b);
 extern void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 extern void linear_linear_intersection(int coef[6]);
 extern void linear_quadratic_intersection(int coef[6]);
+extern void disp_intersections(double intersections[8]);
+extern int get_hex(int num);
 
 /*******************************************************************************
  * This file provides address values that exist in the DE1-SoC Computer

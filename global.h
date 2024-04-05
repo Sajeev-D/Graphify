@@ -10,15 +10,6 @@ extern int ps2_data;
 
 extern int pixel_buffer_start;
 
-// global array of coefficents of linear/qudratic curve
-extern int coefficients[6];
-
-// Array to store the intersection points
-extern double intersectionArray[8];
-
-// Array to store max and min points of a quadratic curve
-extern double maxMinPoints[4];
-
 // Array to store the intersection points with the axis
 extern double intersectionWithAxis[6];
 
@@ -27,14 +18,32 @@ extern void clear_screen();
 extern void swap(int *a, int *b);
 extern void draw_line(int x0, int y0, int x1, int y1, short int line_color);
 
-// Function prototypes from findIntersections.c
-extern void linear_linear_intersection(int coef[6]);
-extern void linear_quadratic_intersection(int coef[6]);
-extern void linear_axis_intersection(int coef[6]);
-extern void quadratic_axis_intersection(int coef[6]);
-extern void maxMinOfQuadratic(int coef[6]);
-extern void disp_intersections(double intersections[8]);
-extern int get_hex(int num);
+// // Function prototypes from findIntersections.c
+// extern void linear_linear_intersection(int coef[6]);
+// extern void linear_quadratic_intersection(int coef[6]);
+// extern void linear_axis_intersection(int coef[6]);
+// extern void quadratic_axis_intersection(int coef[6]);
+// extern void maxMinOfQuadratic(int coef[6]);
+// extern void disp_intersections(double intersections[8]);
+// extern int get_hex(int num);
+
+// // global array of coefficents of linear/qudratic curve
+// extern int coefficients[6];
+
+// // Array to store the intersection points
+// extern double intersectionArray[8];
+
+// // Array to store max and min points of a quadratic curve
+// extern double maxMinPoints[4];
+
+// Function prototypes from intersectionNew.c
+extern int coefFunc1[4];
+extern int coefFunc2[4]; 
+extern double intersectionArr[10]; // Stores all intersection points
+extern double lf(double m, double c, double x); // y = mx + c
+extern double qf(double a, double b, double c, double x); // y = ax^2 + bx + c
+extern double cf(double a, double b, double c, double d, double x); // y = ax^3 + bx^2 + cx + d
+extern void findIntersection(int func1[4], int func2[4]);
 
 /*******************************************************************************
  * This file provides address values that exist in the DE1-SoC Computer

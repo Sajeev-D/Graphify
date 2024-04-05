@@ -27,3 +27,15 @@ Things to do:
         - 1 space will show the which function is being shown
     - Create a fucntion to get the min and max of a quadratic curve (Done)
     - input - global array of coefficents of the qudratic curve output (Done)
+
+Things to do:
+    - Create an audio for on play on press
+    - Create volume control for the audio
+    - Change the intersection functions so that:
+        - It takes 2 global arrays of size 4 in as arguments.
+        - return intersections into up to 3 global variables.
+        - Store intersection with axis of each function into 2 global variables.
+        - Combine all the find intersection fucntions into 1 function and choose based.
+    Note: Coefficients not being used are set to 0
+
+        
